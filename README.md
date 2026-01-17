@@ -25,3 +25,13 @@ test: admin | mercosul2026
 ---
 
 - back (api/db)
+
+API di Monitoraggio Strategico del Commercio Mercosur-UE
+
+Un sistema istituzionale che integra dati internazionali ufficiali (BCE, BCB, Banca Mondiale, OCSE, SISCOMEX e registro UE) per monitorare il commercio, i cambiamenti, i rischi normativi e la conformità alle politiche del Mercosur e dell'Unione Europea.
+
+Progettato per garantire elevata disponibilità, sicurezza e verificabilità, a supporto delle decisioni strategiche e normative del Ministero del Commercio Estero.
+
+(configura...)
+
+
