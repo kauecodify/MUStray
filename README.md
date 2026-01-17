@@ -8,3 +8,5 @@ testing: admin | mercosul2026
 
 <img width="1069" height="474" alt="image" src="https://github.com/user-attachments/assets/57d992c3-b8fb-4c15-bfa3-dcda17254d0b" />
 
+<img width="1070" height="507" alt="image" src="https://github.com/user-attachments/assets/754e3e74-2e6f-4341-b437-67803694dcec" />
+
