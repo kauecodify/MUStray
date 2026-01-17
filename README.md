@@ -1,6 +1,6 @@
 # MUStray
 
-testing: admin | mercosul2026
+test: admin | mercosul2026
 
 <img width="1037" height="30" alt="image" src="https://github.com/user-attachments/assets/45067c80-538b-4fe3-bd55-55148d4cc2cf" />
 
