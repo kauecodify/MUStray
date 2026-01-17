@@ -34,4 +34,8 @@ Progettato per garantire elevata disponibilità, sicurezza e verificabilità, a 
 
 (configura...)
 
+by k
+
+.´.
+
 
