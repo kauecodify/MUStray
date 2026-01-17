@@ -10,3 +10,5 @@ testing: admin | mercosul2026
 
 <img width="1070" height="507" alt="image" src="https://github.com/user-attachments/assets/754e3e74-2e6f-4341-b437-67803694dcec" />
 
+<img width="1063" height="496" alt="image" src="https://github.com/user-attachments/assets/cdaaab07-8b2b-4b99-b490-08435f9d4977" />
+
