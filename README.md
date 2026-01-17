@@ -12,4 +12,12 @@ testing: admin | mercosul2026
 
 <img width="1070" height="507" alt="image" src="https://github.com/user-attachments/assets/754e3e74-2e6f-4341-b437-67803694dcec" />
 
+<img width="1062" height="498" alt="image" src="https://github.com/user-attachments/assets/5f820485-386e-4dbf-8909-fc76ee99671d" />
+
+<img width="1071" height="504" alt="image" src="https://github.com/user-attachments/assets/394da5b1-ba1a-4cad-beaa-51f2bec54afb" />
+
+<img width="1069" height="463" alt="image" src="https://github.com/user-attachments/assets/4eae94ad-5e5d-4692-a859-242fb81211ef" />
+
+<img width="1061" height="403" alt="image" src="https://github.com/user-attachments/assets/1d965c5b-815f-44b0-91de-7c8287c1d305" />
+
 
