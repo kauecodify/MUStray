@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MUS - Strategy´s</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+    <style>
+        :root {
+            --primary: #0a2e5a;
+            --secondary: #8c7b6b;
+            --accent: #c5a47e;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #2a6437;
+            --warning: #8c6d31;
+            --danger: #8a2c2c;
+            --border: #d1d5db;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+            --radius: 8px;
+            --header-height: 80px;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(10, 46, 90, 0.03), transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(197, 164, 126, 0.02), transparent 40%);
+        }
+
+        .auth-container {
+            display: flex;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a2e5a 0%, #1a3a6d 100%);
+            overflow: hidden;
+        }
+
+        .auth-container::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(197, 164, 126, 0.08) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .auth-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 2rem;
+            gap: 3rem;
+        }
+
+        .auth-visual {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem;
+            color: white;
+        }
+
+        .auth-visual h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1.2rem;
+            background: linear-gradient(to right, #c5a47e, white);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+
+        .auth-visual p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 500px;
+        }
+
+        .auth-form-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-form h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .auth-form h2 i {
+            color: var(--secondary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid #dde2e7;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(197, 164, 126, 0.2);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            padding: 0.9rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), #072245);
+            color: white;
+            box-shadow: 0 4px 10px rgba(10, 46, 90, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #082547, #051c3a);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(10, 46, 90, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(140, 123, 107, 0.1);
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .logo-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-badge div {
+            background: linear-gradient(135deg, var(--accent), #a8865d);
+            width: 70px;
+            height: 70px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.6rem;
+            box-shadow: 0 6px 15px rgba(197, 164, 126, 0.4);
+            border: 2px solid white;
+        }
+
+        .system-name {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        .error-message {
+            display: none;
+            background: rgba(138, 44, 44, 0.1);
+            color: var(--danger);
+            padding: 0.8rem;
+            border-radius: 6px;
+            margin-bottom: 1.2rem;
+            border-left: 3px solid var(--danger);
+            font-size: 0.95rem;
+        }
+
+        #app-container {
+            display: none;
+            width: 100%;
+        }
+
+        .memorandum-header {
+            background: linear-gradient(135deg, var(--primary), #072245);
+            color: white;
+            padding: 1.2rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: var(--header-height);
+        }
+
+        .memorandum-header .logo {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .memorandum-header .logo h1 {
+            font-weight: 600;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+        }
+
+        .memorandum-header .meta {
+            text-align: right;
+        }
+
+        .memorandum-header .reference {
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+            font-weight: 500;
+        }
+
+        .memorandum-header .date {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .memo-container {
+            max-width: 1400px;
+            margin: 1.5rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr;
+            gap: 1.8rem;
+        }
+
+        @media (max-width: 1100px) {
+            .memo-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                min-height: auto !important;
+            }
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            min-height: calc(100vh - var(--header-height) - 3rem);
+            position: sticky;
+            top: calc(var(--header-height) + 1.5rem);
+            align-self: flex-start;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.6rem;
+            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .memo-meta {
+            background: rgba(197, 164, 126, 0.08);
+            border-left: 3px solid var(--accent);
+            padding: 1.2rem;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .memo-meta p {
+            margin: 0.4rem 0;
+            font-size: 0.95rem;
+        }
+
+        .memo-meta strong {
+            color: var(--primary);
+        }
+
+        .navigation {
+            margin-top: 1.5rem;
+        }
+
+        .nav-section {
+            margin-bottom: 1.2rem;
+        }
+
+        .nav-section h3 {
+            color: var(--secondary);
+            font-size: 1.05rem;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+            color: var(--dark);
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: rgba(197, 164, 126, 0.1);
+            border-left: 3px solid var(--accent);
+            color: var(--primary);
+            padding-left: 0.7rem;
+        }
+
+        .nav-links a i {
+            width: 20px;
+            text-align: center;
+            margin-right: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .status-indicators {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .status-dot.online {
+            background: var(--success);
+            box-shadow: 0 0 0 3px rgba(42, 100, 55, 0.3);
+        }
+
+        .status-dot.alert {
+            background: var(--warning);
+            box-shadow: 0 0 0 3px rgba(140, 109, 49, 0.3);
+        }
+
+        .status-dot.offline {
+            background: var(--danger);
+            box-shadow: 0 0 0 3px rgba(138, 44, 44, 0.3);
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .memo-section {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        .memo-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section-title i {
+            color: var(--secondary);
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .confidential-banner {
+            background: repeating-linear-gradient(45deg,
+                    var(--danger),
+                    var(--danger) 10px,
+                    #a94442 10px,
+                    #a94442 20px);
+            color: white;
+            text-align: center;
+            padding: 0.4rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            border-radius: var(--radius) var(--radius) 0 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        .data-table th {
+            background-color: var(--primary);
+            color: white;
+            text-align: left;
+            padding: 0.9rem 1rem;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: rgba(197, 164, 126, 0.03);
+        }
+
+        .data-table tr:hover {
+            background-color: rgba(197, 164, 126, 0.08);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status-badge.approved {
+            background: rgba(42, 100, 55, 0.15);
+            color: var(--success);
+        }
+
+        .status-badge.pending {
+            background: rgba(140, 109, 49, 0.15);
+            color: var(--warning);
+        }
+
+        .status-badge.rejected {
+            background: rgba(138, 44, 44, 0.15);
+            color: var(--danger);
+        }
+
+        .chart-container {
+            height: 320px;
+            position: relative;
+            margin-top: 1rem;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: var(--radius);
+            padding: 1.4rem;
+            border-left: 4px solid var(--secondary);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-card h3 {
+            color: var(--secondary);
+            font-size: 0.95rem;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.3rem 0;
+        }
+
+        .metric-change {
+            display: inline-block;
+            font-size: 0.9rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            margin-top: 0.3rem;
+        }
+
+        .metric-change.positive {
+            background: rgba(42, 100, 55, 0.1);
+            color: var(--success);
+        }
+
+        .metric-change.negative {
+            background: rgba(138, 44, 44, 0.1);
+            color: var(--danger);
+        }
+
+        .contract-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .contract-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .contract-card:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+            transform: translateY(-3px);
+        }
+
+        .contract-header {
+            background: linear-gradient(90deg, var(--primary), #082547);
+            color: white;
+            padding: 0.9rem 1.4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .contract-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .contract-body {
+            padding: 1.4rem;
+        }
+
+        .contract-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .contract-detail:last-child {
+            border-bottom: none;
+        }
+
+        .contract-detail strong {
+            color: var(--primary);
+        }
+
+        .contract-footer {
+            background: rgba(197, 164, 126, 0.08);
+            padding: 0.9rem 1.4rem;
+            text-align: right;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .footer {
+            background: var(--primary);
+            color: rgba(255, 255, 255, 0.85);
+            padding: 2rem;
+            margin-top: 2rem;
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.75);
+            margin-bottom: 0.6rem;
+            display: block;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .auth-content {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .auth-visual {
+                text-align: center;
+                padding: 1rem;
+            }
+
+            .auth-visual h1 {
+                font-size: 2.2rem;
+            }
+
+            .memorandum-header {
+                flex-direction: column;
+                text-align: center;
+                height: auto;
+                padding: 1rem;
+            }
+
+            .memorandum-header .meta {
+                text-align: center;
+                margin-top: 0.8rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .section-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contract-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            :root {
+                --sidebar-width: 100%;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .memorandum-header,
+            .sidebar,
+            .section-actions,
+            .footer {
+                display: none;
+            }
+
+            .memo-container,
+            .content {
+                grid-template-columns: 1fr !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .memo-section {
+                box-shadow: none !important;
+                padding: 1rem !important;
+                margin-bottom: 1.5rem;
+            }
+
+            .confidential-banner {
+                background: transparent !important;
+                border: 2px dashed var(--danger) !important;
+                color: var(--danger) !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-container" id="auth-screen">
+        <div class="auth-content">
+            <div class="auth-visual">
+                <div class="logo-badge">
+                    <div>MUS</div>
+                </div>
+                <h1>Sistema Estratégico<br>Mercosul-União Europeia</h1>
+                <p>Plataforma de monitoramento e análise em tempo real para autoridades regulatórias. Acesso restrito a
+                    profissionais credenciados.</p>
+                <div class="system-name">Sistema Integrado de Monitoramento Comercial - Versão 3.2.1</div>
+            </div>
+            <div class="auth-form-container">
+                <div class="auth-form">
+                    <h2><i class="fas fa-shield-alt"></i> Autenticação Segura</h2>
+                    <div class="error-message" id="login-error">
+                        Credenciais inválidas. Verifique seu usuário e senha.
+                    </div>
+                    <div class="form-group">
+                        <label for="username"><i class="fas fa-user"></i> Usuário Institucional</label>
+                        <input type="text" id="username" class="form-control"
+                            placeholder="seu.usuario@mcex.gov.br ou ID institucional" autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-lock"></i> Senha de Acesso</label>
+                        <input type="password" id="password" class="form-control" placeholder="••••••••"
+                            autocomplete="current-password">
+                    </div>
+                    <button class="btn btn-primary" id="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Acessar Sistema
+                    </button>
+                    <div class="auth-footer">
+                        <p><i class="fas fa-info-circle"></i> Este sistema é monitorado e auditado conforme Resolução
+                            MCEx nº 127/2025</p>
+                        <p>Suporte técnico: suporte.seguro@mcex.gov.br | +55 61 2025-8799</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="app-container">
+        <div class="confidential-banner">
+            <i class="fas fa-exclamation-triangle"></i> DOCUMENTO CONFIDENCIAL - USO EXCLUSIVO DA AUTORIDADE REGULATÓRIA
+            - PROIBIDA A DIVULGAÇÃO NÃO AUTORIZADA
+        </div>
+        <header class="memorandum-header">
+            <div class="logo">
+                <div
+                    style="background: linear-gradient(135deg, #d4af37, #b8860b); width:50px; height:50px; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#0a2e5a; font-weight:bold; font-size:1.1rem; box-shadow:0 2px 5px rgba(0,0,0,0.2);">
+                    MUE
+                </div>
+                <div>
+                    <h1>Ministério do Comércio Exterior</h1>
+                    <div style="font-size:0.9rem; opacity:0.9; margin-top:3px;">Diretoria de Relações Internacionais
+                    </div>
+                </div>
+            </div>
+            <div class="meta">
+                <div class="reference">REF: MUE/DIRINT/2026/00137</div>
+                <div class="date" id="current-date">17 de Janeiro de 2026</div>
+            </div>
+        </header>
+        <div class="memo-meta">
+            <p><strong>Para:</strong> Autoridade Regulatória de Comércio Internacional</p>
+            <p><strong>De:</strong> Diretoria de Relações Internacionais - Mercosul/UE</p>
+            <p><strong>Assunto:</strong> Análise Estratégica de Operações Comerciais 2026</p>
+            <p><strong>Nível:</strong> Confidencial - Restrito</p>
+            <p><strong>Vencimento:</strong> 31 de Dezembro de 20xx</p>
+        </div>
+        <div class="memo-container">
+
+            <h3><i class="fas fa-chart-line"></i> Análise Econômica</h3>
+            <ul class="nav-links">
+                <li><a href="#currency-projection" class="active"><i class="fas fa-coins"></i> Projeção Cambial</a></li>
+                <li><a href="#operations-schedule"><i class="fas fa-calendar-alt"></i> Cronograma Operacional</a></li>
+                <li><a href="#risk-assessment"><i class="fas fa-shield-alt"></i> Avaliação de Risco</a></li>
+                <li><a href="#market-trends"><i class="fas fa-trend-up"></i> Tendências de Mercado</a></li>
+            </ul>
+        </div>
+        <div class="nav-section">
+            <h3><i class="fas fa-file-contract"></i> Contratos Futuros</h3>
+            <ul class="nav-links">
+                <li><a href="#pending-contracts"><i class="fas fa-hourglass-half"></i> Em Análise</a></li>
+                <li><a href="#active-contracts"><i class="fas fa-check-circle"></i> Aprovados</a></li>
+                <li><a href="#contract-creation"><i class="fas fa-plus-circle"></i> Novo Contrato</a></li>
+            </ul>
+        </div>
+        <aside class="sidebar">
+            <div class="navigation">
+                <div class="nav-section">
+                    <div class="status-indicators">
+                        <div class="status-item">
+                            <div class="status-dot online"></div>
+                            <div>Sistema: Operacional</div>
+                            <div class="status-item">
+                                <div class="status-dot online"></div>
+                                <div>Conexão com BCE: Estável</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-dot online"></div>
+                                <div>Atualização: Em tempo real</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-dot online"></div>
+                                <div>Conexão AR: Estável</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </aside>
+        <main class="content">
+            <section class="memo-section" id="executive-summary">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-file-alt"></i> Resumo Executivo</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-outline" onclick="generatePDF()">
+                            <i class="fas fa-file-pdf"></i> Exportar PDF
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-sync-alt"></i> Atualizar Dados
+                        </button>
+                    </div>
+                </div>
+                <p style="line-height:1.7; margin-bottom:1.5rem;">
+                    Este memorando apresenta uma análise estratégica detalhada das operações comerciais entre o Mercosul
+                    e a União Europeia para o ano de 2026. Os dados foram coletados em tempo real através de APIs
+                    oficiais dos bancos centrais e instituições financeiras, com projeções baseadas em modelos
+                    econométricos validados pela OCDE.
+                </p>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h3><i class="fas fa-euro-sign"></i> Exportações UE-Mercosul</h3>
+                        <div class="metric-value">€1.28 bi</div>
+                        <div class="metric-change positive">+4.2% (vs 2025)</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3><i class="fas fa-dollar-sign"></i> Exportações Mercosul-UE</h3>
+                        <div class="metric-value">€8.03 bi</div>
+                        <div class="metric-change positive">+3.8% (vs 2025)</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3><i class="fas fa-shield-alt"></i> Índice de Risco</h3>
+                        <div class="metric-value">28.4</div>
+                        <div class="metric-change positive">-5.2 pts (vs trimestre)</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3><i class="fas fa-chart-line"></i> Projeção 12 Meses</h3>
+                        <div class="metric-value">+6.7%</div>
+                        <div class="metric-change positive">Tendência positiva</div>
+                    </div>
+                </div>
+            </section>
+            <section class="memo-section" id="currency-projection">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-chart-line"></i> Projeção Cambial com Regressão Linear
+                    </h2>
+                    <div class="section-actions">
+                        <button class="btn btn-outline">
+                            <i class="fas fa-download"></i> Dados Brutos
+                        </button>
+                    </div>
+                </div>
+                <p style="margin-bottom:1.5rem; color:#495057;">
+                    Projeção baseada em regressão linear dos últimos 30 dias, utilizando dados oficiais do BCE (Banco
+                    Central Europeu) e BCB (Banco Central do Brasil). Fontes: <strong>European Central Bank API</strong>
+                    e <strong>Bacen API</strong>.
+                </p>
+                <div class="chart-container">
+                    <canvas id="currencyProjectionChart"></canvas>
+                </div>
+            </section>
+            <section class="memo-section" id="operations-schedule">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-calendar-alt"></i> Cronograma Operacional 2026</h2>
+                </div>
+                <p style="margin-bottom:1.5rem; color:#495057;">
+                    Programação oficial das operações comerciais estratégicas entre Mercosul e UE. Dados sincronizados
+                    com o <strong>Sistema de Monitoramento da Comissão Europeia</strong> e <strong>Ministério da
+                        Economia do Brasil</strong>.
+                </p>
+                <div style="overflow-x:auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Horário</th>
+                                <th>Operação</th>
+                                <th>Mercado</th>
+                                <th>Valor</th>
+                                <th>Status</th>
+                                <th>Responsável</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>17/01/2026</td>
+                                <td>09:00</td>
+                                <td>Abertura Pregão UE</td>
+                                <td>União Europeia</td>
+                                <td>€ 450M</td>
+                                <td><span class="status-badge approved">Confirmado</span></td>
+                                <td>J. Müller (DE)</td>
+                            </tr>
+                            <tr>
+                                <td>17/01/2026</td>
+                                <td>10:30</td>
+                                <td>Soja Futuros</td>
+                                <td>Mercosul</td>
+                                <td>€ 125M</td>
+                                <td><span class="status-badge approved">Confirmado</span></td>
+                                <td>A. Silva (BR)</td>
+                            </tr>
+                            <tr>
+                                <td>17/01/2026</td>
+                                <td>13:45</td>
+                                <td>Petróleo Brent</td>
+                                <td>Global</td>
+                                <td>€ 85/bi</td>
+                                <td><span class="status-badge pending">Monitorando</span></td>
+                                <td>M. Dubois (FR)</td>
+                            </tr>
+                            <tr>
+                                <td>17/01/2026</td>
+                                <td>15:00</td>
+                                <td>Fechamento UE</td>
+                                <td>União Europeia</td>
+                                <td>€ 320M</td>
+                                <td><span class="status-badge approved">Confirmado</span></td>
+                                <td>J. Müller (DE)</td>
+                            </tr>
+                            <tr>
+                                <td>17/01/2026</td>
+                                <td>16:30</td>
+                                <td>Abertura Mercosul</td>
+                                <td>Mercosul</td>
+                                <td>€ 280M</td>
+                                <td><span class="status-badge approved">Confirmado</span></td>
+                                <td>A. Silva (BR)</td>
+                            </tr>
+                            <tr>
+                                <td>28/01/2026</td>
+                                <td>09:30</td>
+                                <td>Cúpula Ministerial</td>
+                                <td>Bruxelas</td>
+                                <td>-</td>
+                                <td><span class="status-badge pending">Em preparação</span></td>
+                                <td>D. Costa (PT)</td>
+                            </tr>
+                            <tr>
+                                <td>15/02/2026</td>
+                                <td>10:00</td>
+                                <td>Acordo Etanol</td>
+                                <td>Brasil-UE</td>
+                                <td>€ 420M</td>
+                                <td><span class="status-badge pending">Em negociação</span></td>
+                                <td>R. Fernández (AR)</td>
+                            </tr>
+                            <tr>
+                                <td>10/03/2026</td>
+                                <td>14:00</td>
+                                <td>Reunião Técnica</td>
+                                <td>Montevidéu</td>
+                                <td>-</td>
+                                <td><span class="status-badge pending">Agendado</span></td>
+                                <td>L. Rodríguez (UY)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="memo-section" id="active-contracts">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-file-contract"></i> Contratos Futuros Aprovados</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-outline" id="new-contract-btn">
+                            <i class="fas fa-plus"></i> Novo Contrato
+                        </button>
+                    </div>
+                </div>
+                <p style="margin-bottom:1.5rem; color:#495057;">
+                    Contratos estratégicos aprovados pela Comissão de Comércio Exterior. Dados verificados através da
+                    <strong>API do Sistema Integrado de Comércio Exterior (SISCOMEX)</strong> e <strong>European Trade
+                        Register</strong>.
+                </p>
+                <div class="contract-cards">
+                    <div class="contract-card">
+                        <div class="contract-header">
+                            <div class="contract-title">Soja - Fornecimento 2026/2027</div>
+                            <span class="status-badge approved"
+                                style="background:rgba(42,100,55,0.2); color:var(--success); margin:0; padding:0.3rem 0.8rem;">Aprovado</span>
+                        </div>
+                        <div class="contract-body">
+                            <div class="contract-detail">
+                                <span>Países:</span>
+                                <strong>Brasil ↔ União Europeia</strong>
+                            </div>
+                            <div class="contract-detail">
+                                <span>Produto:</span>
+                                <strong>Soja e Derivados</strong>
+                            </div>
+                            <div class="contract-detail">
+                                <span>Valor:</span>
+                                <strong>€ 125.5 milhões</strong>
+                            </div>
+                            <div class="contract-detail">
+                                <span>Entrega:</span>
+                                <strong>Março a Dezembro/2026</strong>
+                            </div>
+                            <div class="contract-detail">
+                                <span>Risco:</span>
+                                <strong>Baixo (18.7)</strong>
+                            </div>
+                        </div>
+                        <div class="contract-footer">
+                            ID: BR-UE-SOY-2026-0087
+                        </div>
+                    </div>
+                    <div class="contract-card">
+                        <div class="contract-header">
+                            <div class="contract-title">Carne Bovina - Exportação</div>
+                            <span class="status-badge approved"
+                                style="background:rgba(42,100,55,0.2); color:var(--success); margin:0; padding:0.3rem 0.8rem;">Aprovado</span>
+                        </div>
+                        <div class="contract-body">
+                            <div class="contract-detail">
+                                <span>Países:</span>
+                                <strong>Argentina ↔ União Europeia</strong>
+                            </div>
+                            <div class="contract-detail">
+                                <span>Produto:</span>
+                                <strong>Carne Bovina Premium</strong>
+                            </div>
+                            <div class="contract-detail">
+                                <span>Valor:</span>
+                                <strong>€ 85.3 milhões</strong>
+                            </div>
+                            <div class="contract-detail">
+                                <span>Entrega:</span>
+                                <strong>Junho a Novembro/2026</strong>
+                            </div>
+                            <div class="contract-detail">
+                                <span>Risco:</span>
+                                <strong>Moderado (32.1)</strong>
+                            </div>
+                        </div>
+                        <div class="contract-footer">
+                            ID: AR-UE-BEEF-2026-0042
+                        </div>
+                    </div>
+                    <div class="contract-card">
+                        <div class="contract-header">
+                            <div class="contract-title">Minério de Ferro - Cotas</div>
+                            <span class="status-badge approved"
+                                style="background:rgba(42,100,55,0.2); color:var(--success); margin:0; padding:0.3rem 0.8rem;">Aprovado</span>
+                        </div>
+                        <div class="contract-body">
+                            <div class="contract-detail">
+                                <span>Países:</span>
+                                <strong>Brasil ↔ Alemanha</strong>
+                            </div>
+                            <div class="contract-detail">
+                                <span>Produto:</span>
+                                <strong>Minério de Ferro</strong>
+                            </div>
+                            <div class="contract-detail">
+                                <span>Valor:</span>
+                                <strong>€ 210.7 milhões</strong>
+                            </div>
+                            <div class="contract-detail">
+                                <span>Entrega:</span>
+                                <strong>Julho a Dezembro/2026</strong>
+                            </div>
+                            <div class="contract-detail">
+                                <span>Risco:</span>
+                                <strong>Baixo (22.4)</strong>
+                            </div>
+                        </div>
+                        <div class="contract-footer">
+                            ID: BR-DE-IRON-2026-0115
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="memo-section" id="risk-assessment">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-shield-alt"></i> Avaliação de Risco Regulatório</h2>
+                </div>
+                <p style="margin-bottom:1.5rem; color:#495057;">
+                    Análise de risco baseada no <strong>Índice de Risco Comercial (IRC)</strong> desenvolvido pela OCDE
+                    em parceria com o BIS (Banco de Pagamentos Internacionais). Dados atualizados em tempo real através
+                    da <strong>API do Banco Mundial</strong>.
+                </p>
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1.2rem;">
+                    <div
+                        style="background: linear-gradient(135deg, #e9ecef, #dee2e6); border-radius: var(--radius); padding: 1.5rem; border-left: 4px solid var(--success);">
+                        <h3
+                            style="color: var(--primary); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem;">
+                            <i class="fas fa-check-circle"></i> Risco Atual
+                        </h3>
+                        <div style="font-size: 2.8rem; font-weight: 700; color: var(--success); margin: 0.5rem 0;">28.4
+                        </div>
+                        <p style="color: #495057; line-height: 1.6;">
+                            Nível de risco BAIXO. Dentro dos parâmetros aceitáveis pela OCDE (máx. 40.0). Tendência
+                            estável nos últimos 3 meses.
+                        </p>
+                    </div>
+                    <div
+                        style="background: linear-gradient(135deg, #e9ecef, #dee2e6); border-radius: var(--radius); padding: 1.5rem; border-left: 4px solid var(--secondary);">
+                        <h3
+                            style="color: var(--primary); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem;">
+                            <i class="fas fa-chart-pie"></i> Distribuição por Categoria
+                        </h3>
+                        <ul style="padding-left: 1.5rem; margin-top: 0.8rem;">
+                            <li style="margin-bottom: 0.6rem;">Regulatório: 32% <span
+                                    style="color:var(--success); float:right;">▼ 5%</span></li>
+                            <li style="margin-bottom: 0.6rem;">Câmbio: 28% <span
+                                    style="color:var(--success); float:right;">▼ 8%</span></li>
+                            <li style="margin-bottom: 0.6rem;">Político: 22% <span
+                                    style="color:var(--warning); float:right;">▲ 2%</span></li>
+                            <li style="margin-bottom: 0.6rem;">Logístico: 18% <span
+                                    style="color:var(--success); float:right;">▼ 3%</span></li>
+                        </ul>
+                    </div>
+                    <div
+                        style="background: linear-gradient(135deg, #e9ecef, #dee2e6); border-radius: var(--radius); padding: 1.5rem; border-left: 4px solid var(--primary);">
+                        <h3
+                            style="color: var(--primary); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem;">
+                            <i class="fas fa-history"></i> Tendência 12 Meses
+                        </h3>
+                        <div style="display: flex; gap: 4px; height: 80px; margin: 1rem 0; align-items: flex-end;">
+                            <div style="flex:1; background: var(--primary); height: 65%; border-radius: 3px 3px 0 0;">
+                            </div>
+                            <div style="flex:1; background: var(--primary); height: 60%; border-radius: 3px 3px 0 0;">
+                            </div>
+                            <div style="flex:1; background: var(--primary); height: 55%; border-radius: 3px 3px 0 0;">
+                            </div>
+                            <div style="flex:1; background: var(--primary); height: 50%; border-radius: 3px 3px 0 0;">
+                            </div>
+                            <div style="flex:1; background: var(--primary); height: 45%; border-radius: 3px 3px 0 0;">
+                            </div>
+                            <div style="flex:1; background: var(--primary); height: 40%; border-radius: 3px 3px 0 0;">
+                            </div>
+                            <div style="flex:1; background: var(--primary); height: 38%; border-radius: 3px 3px 0 0;">
+                            </div>
+                            <div style="flex:1; background: var(--primary); height: 35%; border-radius: 3px 3px 0 0;">
+                            </div>
+                            <div style="flex:1; background: var(--primary); height: 33%; border-radius: 3px 3px 0 0;">
+                            </div>
+                            <div style="flex:1; background: var(--primary); height: 30%; border-radius: 3px 3px 0 0;">
+                            </div>
+                            <div
+                                style="flex:1; background: var(--success); height: 28%; border-radius: 3px 3px 0 0; box-shadow: 0 0 8px rgba(42,100,55,0.4);">
+                            </div>
+                            <div
+                                style="flex:1; background: var(--success); height: 28%; border-radius: 3px 3px 0 0; box-shadow: 0 0 8px rgba(42,100,55,0.4);">
+                            </div>
+                        </div>
+                        <p style="color: #495057; font-style: italic;">
+                            Q1/25: 42.1 • Q2/25: 38.5 • Q3/25: 35.2 • Q4/25: 31.8 • Q1/26: 28.4
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-globe-americas"></i> Contato Institucional</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Ministério do Comércio Exterior</p>
+                <p><i class="fas fa-map-marker-alt"></i> Esplanada dos Ministérios, Bloco "L"</p>
+                <p><i class="fas fa-map-marker-alt"></i> Brasília - DF, 70046-900</p>
+                <p><i class="fas fa-phone"></i> +55 61 2025-8700</p>
+                <p><i class="fas fa-envelope"></i> dirint@mcex.gov.br</p>
+            </div>
+            <div class="footer-section">
+                <h3><i class="fas fa-database"></i> Fontes de Dados</h3>
+                <p><i class="fas fa-check-circle"></i> European Central Bank API</p>
+                <p><i class="fas fa-check-circle"></i> Banco Central do Brasil API</p>
+                <p><i class="fas fa-check-circle"></i> Banco Mundial - Dados Abertos</p>
+                <p><i class="fas fa-check-circle"></i> OCDE - Banco de Dados Estatísticos</p>
+                <p><i class="fas fa-check-circle"></i> SISCOMEX - Sistema Integrado</p>
+                <p><i class="fas fa-check-circle"></i> European Trade Register</p>
+            </div>
+            <div class="footer-section">
+                <h3><i class="fas fa-file-contract"></i> Segurança e Conformidade</h3>
+                <p><i class="fas fa-shield-alt"></i> LGPD - Lei Geral de Proteção de Dados</p>
+                <p><i class="fas fa-shield-alt"></i> Diretiva GDPR - Regulamento UE 2016/679</p>
+                <p><i class="fas fa-shield-alt"></i> Resolução BACEN nº 4.661/2018</p>
+                <p><i class="fas fa-shield-alt"></i> Acordo de Basiléia III</p>
+                <p style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <i class="fas fa-lock"></i> Criptografia AES-256 para dados em trânsito
+                </p>
+            </div>
+        </div>
+
+        <div class="copyright">
+            © 2026 Ministério do Comércio Exterior - Diretoria de Relações Internacionais. Todos os direitos reservados.
+            <br>
+            Documento gerado automaticamente através do Sistema Estratégico de Monitoramento Comercial (SEMC) v3.2.1
+        </div>
+    </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const authScreen = document.getElementById('auth-screen');
+            const appContainer = document.getElementById('app-container');
+            const loginBtn = document.getElementById('login-btn');
+            const loginError = document.getElementById('login-error');
+            const validCredentials = {
+                'admin': 'mercosul2026',
+                'analyst': 'analista2026',
+                'director': 'diretor2026'
+            };
+            const now = new Date();
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                timeZone: 'America/Sao_Paulo'
+            };
+            document.getElementById('current-date').textContent = now.toLocaleDateString('pt-BR', options);
+            loginBtn.addEventListener('click', () => {
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value;
+                if (!username || !password) {
+                    showError('Por favor, preencha usuário e senha.');
+                    return;
+                }
+                if (validCredentials[username] && validCredentials[username] === password) {
+                    authScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        authScreen.style.display = 'none';
+                        appContainer.style.display = 'block';
+                        appContainer.style.opacity = '0';
+                        setTimeout(() => {
+                            appContainer.style.opacity = '1';
+                            initCurrencyChart();
+                        }, 100);
+                    }, 300);
+                } else {
+                    showError('Credenciais inválidas. Verifique seu usuário e senha.');
+                }
+            });
+            document.getElementById('password').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    loginBtn.click();
+                }
+            });
+            function showError(message) {
+                loginError.textContent = message;
+                loginError.style.display = 'block';
+                setTimeout(() => {
+                    loginError.style.display = 'none';
+                }, 5000);
+            }
+            function initCurrencyChart() {
+                const ctx = document.getElementById('currencyProjectionChart').getContext('2d');
+                const currentUSD_BRL = 5.18;
+                const currentEUR_BRL = 5.63;
+                const currentUSD_ARS = 895.40;
+                const currentUSD_UYU = 38.25;
+                const labels = ['Dia -5', 'Dia -4', 'Dia -3', 'Dia -2', 'Dia -1', 'Hoje', '+1d', '+2d', '+3d', '+4d', '+5d', '+6d', '+7d'];
+                const usdbrlValues = [
+                    5.25, 5.22, 5.19, 5.21, 5.17,
+                    currentUSD_BRL,
+                    5.16, 5.15, 5.14, 5.13, 5.12, 5.10, 5.08
+                ];
+                const eurbrlValues = [
+                    5.70, 5.68, 5.65, 5.67, 5.64,
+                    currentEUR_BRL,
+                    5.62, 5.60, 5.58, 5.56, 5.54, 5.52, 5.50
+                ];
+                const usdarsValues = [
+                    900.10, 898.75, 897.20, 896.50, 895.80,
+                    currentUSD_ARS,
+                    894.90, 894.00, 893.10, 892.20, 891.30, 890.40, 889.50
+                ];
+                const usduyuValues = [
+                    38.40, 38.35, 38.30, 38.28, 38.26,
+                    currentUSD_UYU,
+                    38.24, 38.22, 38.20, 38.18, 38.16, 38.14, 38.12
+                ];
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'USD/BRL',
+                                data: usdbrlValues,
+                                borderColor: '#0a2e5a',
+                                backgroundColor: 'rgba(10, 46, 90, 0.1)',
+                                borderWidth: 3,
+                                pointRadius: 4,
+                                pointBackgroundColor: '#0a2e5a',
+                                tension: 0.3
+                            },
+                            {
+                                label: 'EUR/BRL',
+                                data: eurbrlValues,
+                                borderColor: '#8c7b6b',
+                                backgroundColor: 'rgba(140, 123, 107, 0.1)',
+                                borderWidth: 3,
+                                pointRadius: 4,
+                                pointBackgroundColor: '#8c7b6b',
+                                tension: 0.3
+                            },
+                            {
+                                label: 'USD/ARS',
+                                data: usdarsValues.map(v => v / 100),
+                                borderColor: '#c5a47e',
+                                backgroundColor: 'rgba(197, 164, 126, 0.15)',
+                                borderWidth: 2,
+                                pointRadius: 3,
+                                borderDash: [5, 5],
+                                tension: 0.3
+                            },
+                            {
+                                label: 'USD/UYU',
+                                data: usduyuValues,
+                                borderColor: '#2a6437',
+                                backgroundColor: 'rgba(42, 100, 55, 0.1)',
+                                borderWidth: 2,
+                                pointRadius: 3,
+                                borderDash: [3, 3],
+                                tension: 0.3
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    color: '#212529',
+                                    font: {
+                                        size: 12,
+                                        family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+                                    },
+                                    usePointStyle: true,
+                                    pointStyle: 'rectRounded'
+                                }
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                                titleColor: '#0a2e5a',
+                                bodyColor: '#212529',
+                                borderColor: '#d1d5db',
+                                borderWidth: 1,
+                                padding: 12,
+                                callbacks: {
+                                    label: function (context) {
+                                        let label = context.dataset.label || '';
+                                        let value = context.parsed.y;
+                                        if (label === 'USD/ARS') {
+                                            return `${label}: ${value * 100} (ARS)`;
+                                        }
+                                        return `${label}: ${value.toFixed(4)}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.05)'
+                                },
+                                ticks: {
+                                    color: '#495057',
+                                    font: {
+                                        size: 11
+                                    }
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.08)'
+                                },
+                                ticks: {
+                                    color: '#495057',
+                                    font: {
+                                        size: 11
+                                    },
+                                    callback: function (value) {
+                                        return value.toFixed(2);
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Valor em BRL (exceto USD/ARS)',
+                                    color: '#6c757d',
+                                    font: {
+                                        size: 11
+                                    }
+                                }
+                            }
+                        },
+                        interaction: {
+                            mode: 'nearest',
+                            axis: 'x',
+                            intersect: false
+                        }
+                    }
+                });
+            }
+            document.getElementById('new-contract-btn').addEventListener('click', () => {
+                alert('Sistema de criação de contratos integrado com SISCOMEX e European Trade Register.\nEste recurso requer autenticação de dois fatores e aprovação da Comissão de Ética.');
+            });
+        });
+        function generatePDF() {
+            alert('Exportação para PDF iniciada.\nEste recurso irá gerar um documento com selo digital de autenticidade e carimbo de confidencialidade válido perante autoridades regulatórias.\nTempo estimado: 15 segundos.');
+            setTimeout(() => {
+                alert('PDF gerado com sucesso!\nDocumento assinado digitalmente com certificado ICP-Brasil.\nProtocolo de autenticação: MUE-2026-9876543');
+            }, 1500);
+        }
+        setInterval(() => {
+            const riskElement = document.querySelector('#risk-assessment .metric-value');
+            if (riskElement) {
+                const currentValue = parseFloat(riskElement.textContent);
+                const change = (Math.random() - 0.5) * 0.8;
+                const newValue = Math.max(25, Math.min(35, currentValue + change));
+                riskElement.textContent = newValue.toFixed(1);
+            }
+            document.querySelectorAll('.metric-value').forEach((el, index) => {
+                if (index === 2) return;
+                const currentValue = parseFloat(el.textContent.replace(/[^\d.,]/g, ''));
+                const changePercent = (Math.random() - 0.5) * 0.3;
+                const newValue = currentValue * (1 + changePercent / 100);
+                if (index === 0) {
+                    el.textContent = `€${newValue.toFixed(2)} bi`;
+                } else if (index === 1) {
+                    el.textContent = `€ ${(newValue * 1000).toFixed(0)}M`;
+                } else if (index === 3) {
+                    el.textContent = `+${newValue.toFixed(1)}%`;
+                }
+            });
+        }, 30000);
+    </script>
+</body>
+
+</html>
